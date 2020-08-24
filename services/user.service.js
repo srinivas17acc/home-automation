@@ -8,13 +8,7 @@ var status;
 var data = [];
 var id;
 
-var response = {
-    message,
-    status,
-    data: [
-        id
-    ]
-}
+var response = {}
 
 const register = async (userData) => {
 
@@ -26,8 +20,11 @@ const register = async (userData) => {
     }
 
     const { error } = registerValidation(userData);
-    if (error) return response.status = 400, response.message = error.details[0].message;
-
+    if (error) {
+        response.message = error.details[0].message;
+        response.status = 400
+        return response;
+    }
     const hashPwd = await bcrypt.hash(userData.password, 10);
 
     const user = new User({
@@ -43,6 +40,7 @@ const register = async (userData) => {
         response.message = "User created successfully"
         return response;
     } catch (err) {
+        console.log(err);
         return response.status = 400, response.message = err;
     }
 
@@ -72,7 +70,9 @@ const login = async (userData) => {
         return response;
     }
 
-    const token = jwt.sign({_id: userData.id}, process.env.TOKEN_SECRET);
+    console.log(validUser.id, 'validuserid');
+
+    const token = jwt.sign({id: validUser.id}, process.env.TOKEN_SECRET);
     response.data.header = 'auth-token';
     response.data.token = token;
     
@@ -82,6 +82,34 @@ const login = async (userData) => {
     return response;
 };
 
-module.exports = {
-    register, login
-}
+
+  
+  const getUserById = async (id) => {
+    return User.findById(id).lean();
+  };
+  
+  const getUserByEmail = async (email) => {
+    return User.findOne({ email });
+  };
+  
+  const deleteUserById = async (userId) => {
+    const user = await getUserById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    await user.remove();
+    return user;
+  };
+
+
+  module.exports = {
+    register, 
+    login,
+    getUserById,
+    getUserByEmail,
+    deleteUserById
+  };
+
+
+
+
