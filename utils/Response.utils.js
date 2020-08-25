@@ -1,22 +1,16 @@
-const successResponse = (data, message='') => {
-
+const successResponse = (data, message = '') => {
     return {
-        code: 200, 
+        code: 200,
         data: data,
         message: message,
-
     }
-
 };
 
-
 const errorResponse = (err) => {
-
     return {
-        code: 400, 
+        code: 400,
         error: err,
     }
-
 };
 
 

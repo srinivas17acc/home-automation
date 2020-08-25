@@ -3,48 +3,48 @@ const Device = require('../models/device.model');
 const UserDevices = require('../models/userDevice.model');
 
 const addDeviceToUser = async (userId, deviceId) => {
-    const filter = {"userId": userId};
-    try{
-   
+    const filter = { "userId": userId };
+    try {
+
         const currentDevicesInUser = await UserDevices.findOne(filter);
 
-    if(!currentDevicesInUser){
-        return await UserDevices.create({
-            userId: userId,
-            devices: [deviceId],
-        });
-    }else{
-        currentDevicesInUser.devices.push(deviceId);
-        currentDevicesInUser.save();
+        if (!currentDevicesInUser) {
+            return await UserDevices.create({
+                userId: userId,
+                devices: [deviceId],
+            });
+        } else {
+            currentDevicesInUser.devices.push(deviceId);
+            currentDevicesInUser.save();
+        }
+        return currentDevicesInUser;
+    } catch (err) {
+        throw new Error(err);
     }
-    return currentDevicesInUser;
-}catch(err) {
-    console.log(err);
-}
-return null;
+    return null;
 }
 
 const removeDeviceFromUser = async (deviceId) => {
-    const filter = {"userId": userId, devices: deviceId};
+    const filter = { "userId": userId, devices: deviceId };
     const currentDevicesInUser = await UserDevices.findOne(filter);
-    if(currentDevicesInUser) {
-        const updateFilter = {"userId": userId};
+    if (currentDevicesInUser) {
+        const updateFilter = { "userId": userId };
         let index = currentDevicesInUser.devices.indexOf(deviceId);
         currentDevicesInUser.devices.splice(index, 1);
-        UserDevices.updateOne(updateFilter,currentDevicesInUser);
+        UserDevices.updateOne(updateFilter, currentDevicesInUser);
     }
 }
 
 const getUserDevices = async (user) => {
-    const filter = {"userId": user.id};
+    const filter = { "userId": user.id };
     const currentDevicesInUser = await UserDevices.findOne(filter);
-    
-    if(currentDevicesInUser){
+
+    if (currentDevicesInUser) {
         return {
             user,
             devices: omit(currentDevicesInUser, 'userId'),
         }
-    }else {
+    } else {
         return {
             user,
             devices: [],

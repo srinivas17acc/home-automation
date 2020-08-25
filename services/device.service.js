@@ -19,10 +19,7 @@ const createDevice = async (userId, device) => {
             ...omit(value, ['_id', 'deviceId', '__v', ]),
         };
     }catch(err){
-        console.log(err);
-        return {
-            error: "Device duplicate entry...",
-        }
+        throw new Error('duplicate entry');
     }
 }
 
@@ -31,11 +28,18 @@ const updateDeviceStatus = async (deviceStatus) => {
 }
 
 const removeDevice = async (userId, deviceId) => {
-    const filter = {"deviceId": deviceId};
-    const device = await Device.findOne(filter);
-    await UserDevice.removeDeviceFromUser(userId, deviceId);
-    const deviceStatus = await DeviceStatusService.getDeviceStatus(deviceId);
-    deviceStatus.remove();
+    try {
+        const result = await  Promise.allSettled(
+            Device.findOne(filter),
+            UserDevice.removeDeviceFromUser(userId, deviceId),
+            DeviceStatusService.getDeviceStatus(deviceId)
+       )
+         result[2].remove();
+
+    }catch(err) {
+         throw new Error(err);
+    }
+   
 }
 
 module.exports = {

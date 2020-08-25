@@ -12,11 +12,4 @@ module.exports = {
             useFindAndModify: false,
         }
     },
-    jwt: {
-        secret: process.env.TOKEN_SECRET || 'mysecretpassword',
-        accessExpirationMinutes: 60 * 100,
-        options:{
-            algorithm: 'RS256',
-        },
-    }
 }

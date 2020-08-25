@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-//const toJSON = require('./toJSON.plugin')
 
 const userDeviceSchema = mongoose.Schema({
 
@@ -9,8 +8,6 @@ const userDeviceSchema = mongoose.Schema({
     },
     devices: [String],
 });
-
-//userDeviceSchema.plugin(toJSON);
 
 userDeviceSchema.methods.addDevice = async (deviceId) => {
     return this.devices.push(deviceId);
