@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-//const toJSON = require('./toJSON.plugin');
 
 const DeviceSchema = mongoose.Schema({
     _id: {
@@ -13,7 +12,7 @@ const DeviceSchema = mongoose.Schema({
     },
     model: {
         type: String,
-        trim:true
+        trim: true
     },
     macId: {
         type: String,
@@ -24,13 +23,11 @@ const DeviceSchema = mongoose.Schema({
         {
             name: {
                 type: String,
-                trim:true,
+                trim: true,
             },
             value: mongoose.Mixed,
         }
     ]
 });
-
-//DeviceSchema.plugin(toJSON);
 
 module.exports = mongoose.model('Device', DeviceSchema);
