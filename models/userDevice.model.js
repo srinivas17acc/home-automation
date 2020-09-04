@@ -9,8 +9,4 @@ const userDeviceSchema = mongoose.Schema({
     devices: [String],
 });
 
-userDeviceSchema.methods.addDevice = async (deviceId) => {
-    return this.devices.push(deviceId);
-}
-
 module.exports = mongoose.model('UserDevice', userDeviceSchema);

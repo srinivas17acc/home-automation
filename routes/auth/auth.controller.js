@@ -1,12 +1,12 @@
 const userService = require('../../services/user.service');
 const { omit } = require('lodash');
-const { required } = require('@hapi/joi');
 const { errorResponse, successResponse } = require('../../utils/Response.utils');
 const httpStatus = require('http-status');
 
 
 const register = async (req, res) => {
     try {
+        console.log(req.body);
         const user = await userService.register(req.body);
         res.status(httpStatus.OK).send(successResponse(user, message = 'User created successfully'));
     } catch (err) {

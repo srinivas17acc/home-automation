@@ -2,7 +2,6 @@ const User = require('../models/user.model');
 const { registerValidation, loginValidation } = require('../routes/auth/auth.validation')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-//const { report } = require('../routes');
 
 
 const register = async (userData) => {

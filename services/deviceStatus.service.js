@@ -1,6 +1,9 @@
 const DeviceStatusSchema = require('../models/DeviceStatus.model');
 
 const createOrUpdateDeviceStatus = async (deviceStatus) => {
+    
+    Promise.reject('my error');
+
     let status;
     const filter = { deviceId: deviceStatus.id };
     status = await DeviceStatusSchema.findOneAndUpdate(filter, {
@@ -13,7 +16,6 @@ const createOrUpdateDeviceStatus = async (deviceStatus) => {
         upsert: true,
     }).lean();
 
-    console.log(status, ' status');
     return status;
 };
 
